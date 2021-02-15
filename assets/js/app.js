@@ -96,4 +96,24 @@ function enter(e) {
 
     result();
 
+    // A function that returns a function by adding one to the argument passed (First class function)
+    function addOne(number) {
+        return function () {
+            return number += 1;
+        };
+    }
+
+    // First class function(returns a function and accepts a function as an argument), factory function - a function that returns a new object.
+    // Factory functions do not require the use of the new keyword, but can still be used to initialize an object, like a constructor.
+    function to(generator, wish_no) {
+        return function () {
+            var value = generator();
+            if (value < wish_no) {
+                return value;
+            }
+            return undefined;
+        };
+    }
+
+
 };
