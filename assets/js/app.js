@@ -41,4 +41,59 @@ function enter(e) {
 
     guessedList.appendChild(guesses);
 
+    
+    // Applied the concept of closures:
+    // The idea: An inner function enjoys the context even after the parent functions have returned. Set of variables of the
+    // inner function encloses the set of variables of the outer function that is why its named closure. The first language to bring this idea to the main stream was JS.
+    // In the implementation below the inner function will continue to have access to the outer function (array) even after the outer has returned.
+    // Behind the scenes of closures: Everything is moved to the heap and the process is as follows:
+    // Activation record - will contain the return address, all the input parameters and might also contain local arguments or variables
+    // In Js a functional language, a function object will contain a pointer to the code so it executes it when the function is invoked
+    // and the function object will contain a reference to the activation of the function that created it.
+    // Through the activation connection the below implementation for example will have access to the array variable and will continue to have it 
+    // as long as it survives. As an example if undefined was placed as an argument all of it can get garbage collected but until then as long as
+    // the inner function survives and needs that activation it'll keep it and the garbage collector won't touch it.
+    let result = (function() {
+        let array = [
+            correctness.get('less than 10'),
+            correctness.get('less than 20'),
+            correctness.get('less than 30'),
+            correctness.get('less than 40'),
+            correctness.get('less than 50'),
+            correctness.get('greater than 50'),
+            correctness.get('greater than 60'),
+            correctness.get('greater than 70'),
+            correctness.get('greater than 80'),
+            correctness.get('greater than 90')
+        ];
+
+        return function() {            
+            if (Reflect.get(magicNumber, 'number') === Number(Reflect.get(magicNumber, 'guessedNumber'))) {
+                document.location.reload();   
+                return alert(`Awesome you guessed the number`);
+            } else if (0 >= Reflect.get(magicNumber, 'guessedNumber') || Reflect.get(magicNumber, 'guessedNumber')  >= 100) {
+                return (display.textContent = `Guess again :D Please submit a number within the specified range. Thank you!!`);
+            } else if ((Reflect.get(magicNumber, 'guessedNumber') <= Number(Reflect.get(magicNumber, 'number'))) ) {
+                for (let index = 0; index < array.length; index++) {
+                    if (Reflect.get(magicNumber, 'number') <= array[index].end) {
+                        return (display.textContent = `Guess again :D Hint: The number satisfies the following conditions: x <= ${array[index].end} and x >= ${array[index].start}`);
+                    }       
+                }
+            } else if ((Reflect.get(magicNumber, 'guessedNumber') >= Number(Reflect.get(magicNumber, 'number'))) ) {
+                for (let index = array.length-1; index > 0; index--) {
+                    if (Reflect.get(magicNumber, 'number') >= array[index].start) {
+                        return (display.textContent = `Guess again :D Hint: The number satisfies the following conditions: x >= ${array[index].start} and x <= ${array[index].end}`);
+                    }        
+                }                       
+            } else {
+                document.location.reload();  
+                return alert(`Please enter numbers only`);
+            }
+        };
+    
+
+    }());
+
+    result();
+
 };
