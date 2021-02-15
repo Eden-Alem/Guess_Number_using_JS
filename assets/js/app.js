@@ -41,7 +41,6 @@ function enter(e) {
 
     guessedList.appendChild(guesses);
 
-    
     // Applied the concept of closures:
     // The idea: An inner function enjoys the context even after the parent functions have returned. Set of variables of the
     // inner function encloses the set of variables of the outer function that is why its named closure. The first language to bring this idea to the main stream was JS.
@@ -95,7 +94,7 @@ function enter(e) {
     }());
 
     result();
-
+    
     // A function that returns a function by adding one to the argument passed (First class function)
     function addOne(number) {
         return function () {
@@ -115,5 +114,20 @@ function enter(e) {
         };
     }
 
+    // Invoked the function by passing the addOne function and the chances the user have
+    let generate = to(addOne(turns), 7);
+    
+    // Checks for the value of the function each time its called and in returning undefined the users chances are over.
+    if (isNaN(turns)) {
+        document.location.reload();        
+        return alert(`Limit exceeded you can't guess any more :(, try again!!`);  
+       
+    } 
 
+    // Update the value of the user's chance and pass it as an argument to the function thats being passed to the factory function
+    // cause each time a new object is being created
+    turns = generate();
+
+    
+    
 };
