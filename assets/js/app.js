@@ -126,8 +126,8 @@ function enter(e) {
 
     // Update the value of the user's chance and pass it as an argument to the function thats being passed to the factory function
     // cause each time a new object is being created
-    turns = generate();
-
-    
+    turns = generate();   
     
 };
+
+export default randomNumber;
